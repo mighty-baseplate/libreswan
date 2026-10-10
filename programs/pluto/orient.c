@@ -508,6 +508,35 @@ void jam_orientation(struct jambuf *buf,
 		(never_negotiate(c) ? policy_shunt_names[c->config->never_negotiate_shunt] :
 		 c->config->ike_info->version_name);
 	jam_string(buf, what);
+
+	/*
+	 *  appending type of connection
+	 */
+	switch (c->local->kind) {
+	case CK_TEMPLATE:
+		jam_string(buf, " template");
+		break;
+	case CK_INSTANCE:
+		jam_string(buf, " instance");
+		break;
+	case CK_PERMANENT:
+		jam_string(buf, " permanent");
+		break;
+	case CK_GROUP:
+		jam_string(buf, " group");
+		break;
+	case CK_LABELED_TEMPLATE:
+		jam_string(buf, " labeled-template");
+		break;
+	case CK_LABELED_PARENT:
+		jam_string(buf, " labeled-parent");
+		break;
+	case CK_LABELED_CHILD:
+		jam_string(buf, " labeled-child");
+		break;
+	case CK_INVALID:
+		bad_case(c->local->kind);
+	}
 	jam_string(buf, " connection");
 
 	/*
